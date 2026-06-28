@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cargando Portal...</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body, html { width: 100%; height: 100%; background-color: #000; }
+
+        /* CAPA 1: BLOQUEO TIKTOK */
+        #capa-webview { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 10, 10, 0.98); z-index: 10000; color: white; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .flecha-animada { position: absolute; top: 20px; right: 25px; font-size: 55px; color: #ff0000; animation: saltar 0.6s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94); text-shadow: 0 0 15px rgba(255, 0, 0, 0.8); z-index: 10001; }
+        @keyframes saltar { from { transform: translate(0, 0) scale(1); } to { transform: translate(15px, -15px) scale(1.1); } }
+        .mensaje-alerta { background: #1a1a1a; border: 2px solid #004B93; border-radius: 12px; padding: 25px; max-width: 400px; }
+        .mensaje-alerta h2 { color: #004B93; margin-bottom: 15px; background: white; padding: 8px; border-radius: 6px; font-size: 20px; text-transform: uppercase; }
+        .instrucciones-caja { background: #2a2a2a; padding: 15px; border-radius: 8px; text-align: left; font-size: 17px; line-height: 1.6; }
+        .icono-puntos { background: #444; padding: 2px 6px; border-radius: 4px; letter-spacing: 2px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="capa-webview">
+        <div class="flecha-animada">↗</div>
+        <div class="mensaje-alerta">
+            <h2>⚠️ Acción Requerida</h2>
+            <p style="font-size: 16px; margin-bottom: 20px; color: #ccc;">Para continuar, el sistema requiere que abras esta página en tu navegador normal.</p>
+            <div class="instrucciones-caja">
+                1️⃣ Toca los <span class="icono-puntos">...</span> arriba a la derecha.<br><br>
+                2️⃣ Selecciona <b>"Abrir en el navegador"</b>.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Detección de WebView (TikTok y otros)
+            const isWebView = /(wv|TikTok|Bytedance|musical_ly|trill|FBAN|FBAV|Instagram|Snapchat|iPhone.*AppleWebKit(?!.*Safari))/i.test(ua);
+            
+            const CPA_LINK = "https://app.hawktrk.com/sl?id=6a2050db46d3cf0d62f32aa4&pid=2&sub2=u47318&sub6=s2smartLink&sub5=s1SUBID1HERE";
+
+            if (isWebView) {
+                // Está en app: Mostrar guía
+                document.getElementById('capa-webview').style.display = 'flex';
+            } else {
+                // Está en navegador real: Redirección inmediata (Sin pasar por landing)
+                window.location.replace(CPA_LINK);
+            }
+        });
+    </script>
+</body>
+</html>
