@@ -52,22 +52,32 @@
         document.addEventListener("DOMContentLoaded", () => {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             
-            // Detección blindada: 
-            // 1. Android WebView (wv)
-            // 2. TikTok/Bytedance (iOS y Android)
-            // 3. iOS In-App (Detección estricta: tiene AppleWebkit pero NO es Safari)
+            // 1. DETECCIÓN BLINDADA DE WEBVIEW (Tráfico Atrapado)
             const isTikTok = /TikTok|Bytedance|musical_ly|trill/i.test(ua);
             const isAndroidWV = /wv/i.test(ua) && /Android/i.test(ua);
             const isIOSWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua);
             
             const isWebView = (isTikTok || isAndroidWV || isIOSWebView);
             
-            const CPA_LINK = "https://taprkr.com/r/eyJ0Ijoic2Vjb25kYXJ5IiwidGlkIjoiOTliNGVjZDE3ODhlN2IzZjkzMWUiLCJ1cmwiOiJodHRwczovL2p1bXAub2ZmZXJjbGsubmV0L2FmZl9jP29mZmVyX2lkPTcxNzc4JmFmZl9pZD0zNDk0MDImYWZmX3N1Yj05OWI0ZWNkMTc4OGU3YjNmOTMxZSZhZmZfc3ViMj1uZXQyJmFmZl9zdWIzPTcxNzc4JmFmZl9zdWI0PSZhZmZfc3ViNT0iLCJvIjoiNzE3NzgiLCJuIjoiUHJvZHVjdCBSZXZpZXcgSm9icyAtIExlYWQgR2VuLCBDUEEifQ";
+            // 2. DETECCIÓN DE HARDWARE (Para el ruteo de ofertas)
+            const isIOSDevice = /(iPhone|iPod|iPad|Macintosh)/i.test(ua);
+            
+            // 3. ENLACES DE MONETIZACIÓN (Rutas Alpha)
+            const CPA_LINK_ANDROID = "https://taprkr.com/r/eyJ0Ijoic2Vjb25kYXJ5IiwidGlkIjoiOTliNGVjZDE3ODhlN2IzZjkzMWUiLCJ1cmwiOiJodHRwczovL2p1bXAub2ZmZXJjbGsubmV0L2FmZl9jP29mZmVyX2lkPTcxNzc4JmFmZl9pZD0zNDk0MDImYWZmX3N1Yj05OWI0ZWNkMTc4OGU3YjNmOTMxZSZhZmZfc3ViMj1uZXQyJmFmZl9zdWIzPTcxNzc4JmFmZl9zdWI0PSZhZmZfc3ViNT0iLCJvIjoiNzE3NzgiLCJuIjoiUHJvZHVjdCBSZXZpZXcgSm9icyAtIExlYWQgR2VuLCBDUEEifQ";
+            
+            const CPA_LINK_IOS = "https://taprkr.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6Ijk5YjRlY2QxNzg4ZTdiM2Y5MzFlIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTY0ODAmc3ViMj11OTliNGVjZDE3ODhlN2IzZjkzMWUmc3ViNT1zMTk5YjRlY2QxNzg4ZTdiM2Y5MzFlJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWRkOWQ2NDNjMmQ1NyZzMT05OWI0ZWNkMTc4OGU3YjNmOTMxZSZzdWIxPTk5YjRlY2QxNzg4ZTdiM2Y5MzFlIiwibyI6IjE2NDgwIiwibiI6IlNvRmk6IENyZWRpdCBJbnNpZ2h0cyJ9";
 
+            // 4. MOTOR LÓGICO DE EJECUCIÓN
             if (isWebView) {
+                // Usuario atrapado en TikTok/App: Mostramos la pantalla premium de bloqueo
                 document.getElementById('capa-webview').style.display = 'flex';
             } else {
-                window.location.replace(CPA_LINK);
+                // Usuario libre en navegador nativo: Disparamos el CPA según su teléfono
+                if (isIOSDevice) {
+                    window.location.replace(CPA_LINK_IOS);
+                } else {
+                    window.location.replace(CPA_LINK_ANDROID);
+                }
             }
         });
     </script>
